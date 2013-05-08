@@ -1,0 +1,30 @@
+body {
+    width:320px;
+    margin:120px auto ;
+    text-align:center;
+}
+.connect-four-state-not-this-turn {
+    background-color:#FFE4E1;
+}
+.connect-four-state-this-turn {
+    background-color:#93DB70;
+}
+.connect-four-board {
+    margin:0 auto;
+    table-layout: fixed;
+    border-spacing:0;
+
+    -webkit-transform:rotate(-90deg);
+
+    border-left:1px solid #ccc;
+}
+.connect-four-row {
+    background-color:#efefef;
+}
+.connect-four-cell {
+    height:40px; width:40px;
+    margin:0;
+}
+.connect-four-row:hover .connect-four-cell {
+    background-color:#e6e6e6;
+}
