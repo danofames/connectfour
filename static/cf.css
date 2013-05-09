@@ -15,6 +15,7 @@ body {
     border-spacing:0;
 
     -webkit-transform:rotate(-90deg);
+    transform:rotate(-90deg);
 
     border-left:1px solid #ccc;
 }
@@ -22,9 +23,20 @@ body {
     background-color:#efefef;
 }
 .connect-four-cell {
-    height:40px; width:40px;
+    height:60px; width:60px;
     margin:0;
+}
+.connect-four-cell-state-occupied {
+
 }
 .connect-four-row:hover .connect-four-cell {
     background-color:#e6e6e6;
+}
+.connect-four-cell-state-player-1,
+.connect-four-row:hover .connect-four-cell-state-player-1 {
+    background-color:blue;
+}
+.connect-four-cell-state-player-2,
+.connect-four-row:hover .connect-four-cell-state-player-2 {
+    background-color:yellow;
 }

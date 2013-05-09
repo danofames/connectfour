@@ -61,9 +61,9 @@ if (file_put_contents($game_file_tmp_path, json_encode($game))) {
         file_put_contents('php://stderr', $e->getMessage());
     }
 }
+$game->last_move_player = $game->turns[count($game->turns)-1][0];
 
 header('Content-type: application/json');
-setcookie($player_id_cookie_name, $player_id, time()+3600, '/');
-$game->last_move_player = $game->turns[count($game->turns)-1][0];
+setcookie($player_id_cookie_name, $player_id, strtotime('+10 days'), '/');
 echo json_encode($game);
 ?>
