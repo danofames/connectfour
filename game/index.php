@@ -8,17 +8,7 @@ else {
     $game_id = substr(str_shuffle(MD5(microtime())), 0, 5);
 }
 
-$game_file_path = $config->game_dir.'/'.$game_id.'.json';
-$game_file_tmp_path = $config->game_tmp_dir.'/'.$game_id.'.json';
-
-$player_id_cookie_name = $game_id . '-player_id';
-
-if (isset($_COOKIE[$player_id_cookie_name])) {
-    $player_id = $_COOKIE[$player_id_cookie_name];
-}
-else {
-    $player_id = null;
-}
+require_once 'setup.php';
 
 if (file_exists($game_file_path)) {
     $game = json_decode(file_get_contents($game_file_path));
@@ -53,15 +43,14 @@ else {
     array_push($game->players, $player_id);
 }
 
-if (file_put_contents($game_file_tmp_path, json_encode($game))) {
-    try {
-        rename($game_file_tmp_path, $game_file_path);
-    }
-    catch (Exception $e) {
-        file_put_contents('php://stderr', $e->getMessage());
-    }
+save_game_file($game_file_tmp_path, $game_file_path, $game);
+
+if (count($game->turns) > 0) {
+    $game->last_move_player = $game->turns[count($game->turns)-1][0];
 }
-$game->last_move_player = $game->turns[count($game->turns)-1][0];
+else {
+    $game->last_move_player = null;
+}
 
 header('Content-type: application/json');
 setcookie($player_id_cookie_name, $player_id, strtotime('+10 days'), '/');

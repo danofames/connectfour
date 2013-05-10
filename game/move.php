@@ -7,7 +7,8 @@ if (isset($_POST['game_id'])) {
 else {
     header('Content-type: application/json');
     echo json_encode(array(
-        'status' => -1
+        'status' => 0,
+        'message' => 'need game id'
     ));
     exit();
 }
@@ -17,7 +18,7 @@ require_once 'setup.php';
 if (!file_exists($game_file_path)) {
     header('Content-type: application/json');
     echo json_encode(array(
-        'status' => -1,
+        'status' => 0,
         'message' => 'not an active game'
     ));
     exit();
@@ -28,57 +29,60 @@ $game = json_decode(file_get_contents($game_file_path));
 if (!in_array($player_id, $game->players)) {
     header('Content-type: application/json');
     echo json_encode(array(
-        'status' => -1,
+        'status' => 0,
         'message' => 'not a valid player id'
     ));
     exit();
 }
 
-$row = $_POST['row'];
+$col = $_POST['col'];
 
 if (count($game->turns) > 0) {
     if ($game->turns[count($game->turns)-1][0] == $player_id) {
         header('Content-type: application/json');
         echo json_encode(array(
-            'status' => -1,
-            'message' => 'not your turn yo'
+            'status' => 0,
+            'message' => 'not your turn'
         ));
         exit();
     }
 }
 
-if (count($game->board[$row]) >= $max_row_count) {
+if (!isset($game->cols[$col])) {
     header('Content-type: application/json');
     echo json_encode(array(
-        'status' => -1,
-        'message' => 'that row is full'
-    ));
-    exit();
-}
-
-if (!isset($game->board[$row])) {
-    header('Content-type: application/json');
-    echo json_encode(array(
-        'status' => -1,
+        'status' => 0,
         'message' => 'not a valid row'
     ));
     exit();
 }
 
-array_push($game->board[$row], intval($player_id));
+if (!make_move($game, $player_id, $col)) {
+    header('Content-type: application/json');
+    echo json_encode(array(
+        'status' => 0,
+        'message' => 'not a valid move'
+    ));
+    exit();
+}
+
+if (has_won($game, $player_id)) {
+    // do something
+}
+
 array_push($game->turns, array(
     intval($player_id),
-    intval($row)
+    intval($col)
 ));
 
-if (file_put_contents($game_file_tmp_path, json_encode($game))) {
-    try {
-        rename($game_file_tmp_path, $game_file_path);
-    }
-    catch (Exception $e) {
-        file_put_contents('php://stderr', $e->getMessage());
-    }
+if (count($game->turns) > 0) {
+    $game->last_move_player = $game->turns[count($game->turns)-1][0];
 }
+else {
+    $game->last_move_player = null;
+}
+
+save_game_file($game_file_tmp_path, $game_file_path, $game);
 
 header('Content-type: application/json');
 echo json_encode($game);
