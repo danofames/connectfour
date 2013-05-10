@@ -1,0 +1,53 @@
+#!/bin/bash
+# -xv
+
+GAMEID=`date +"%S%N"`
+GAME_URL="http://localhost:8082/game/"
+MOVE_URL="${GAME_URL}move.php"
+# initializes player 1
+curl "${GAME_URL}?game_id=$GAMEID"
+# initializes player 2
+curl "$}?game_id=$GAMEID"
+
+function turn {
+    curl -b "$GAMEID-player_id=${1%%;*}" -d "game_id=$GAMEID&col=${1#*;}" $MOVE_URL
+}
+
+function vertical_win {
+    TURNS=('1;0' '2;1' '1;0' '2;1' '1;0' '2;1' '1;0' '2;1' '1;0' '2;1' '1;0' '2;1')
+    for t in "${TURNS[@]}"
+    do
+        turn $t
+    done
+}
+
+function horizontal_win {
+    TURNS=('1;0' '2;0' '1;1' '2;1' '1;2' '2;1' '1;3' '2;3' '1;4' '2;4' '1;5' '2;5')
+    for t in "${TURNS[@]}"
+    do
+        turn $t
+    done
+}
+
+function diagonal_win {
+    TURNS=('1;0' '2;1' '1;2' '2;2' '1;1' '2;3' '1;2' '2;3' '1;4' '2;3' '1;3' '2;5')
+    for t in "${TURNS[@]}"
+    do
+        turn $t
+    done
+}
+
+function diagonal_reversed_win {
+    TURNS=('1;5' '2;4' '1;3' '2;3' '1;4' '2;2' '1;3' '2;2' '1;1' '2;2' '1;2' '2;1')
+    for t in "${TURNS[@]}"
+    do
+        turn $t
+    done
+}
+
+# vertical_win
+# horizontal_win
+# diagonal_win
+diagonal_reversed_win
+
+exit 0

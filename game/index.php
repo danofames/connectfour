@@ -9,6 +9,7 @@ else {
 }
 
 require_once 'setup.php';
+require_once 'game.php';
 
 if (file_exists($game_file_path)) {
     $game = json_decode(file_get_contents($game_file_path));

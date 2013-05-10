@@ -14,6 +14,7 @@ else {
 }
 
 require_once 'setup.php';
+require_once 'game.php';
 
 if (!file_exists($game_file_path)) {
     header('Content-type: application/json');
@@ -25,6 +26,14 @@ if (!file_exists($game_file_path)) {
 }
 
 $game = json_decode(file_get_contents($game_file_path));
+
+if (isset($game->winner)) {
+    echo json_encode(array(
+        'status' => 0,
+        'message' => 'game has a winner'
+    )) . "\n";
+    exit();
+}
 
 if (!in_array($player_id, $game->players)) {
     header('Content-type: application/json');
@@ -62,18 +71,18 @@ if (!make_move($game, $player_id, $col)) {
     echo json_encode(array(
         'status' => 0,
         'message' => 'not a valid move'
-    ));
+    )) . "\n";
     exit();
-}
-
-if (has_won($game, $player_id)) {
-    // do something
 }
 
 array_push($game->turns, array(
     intval($player_id),
     intval($col)
 ));
+
+if (has_won($game, $player_id)) {
+    $game->winner = $player_id;
+}
 
 if (count($game->turns) > 0) {
     $game->last_move_player = $game->turns[count($game->turns)-1][0];
