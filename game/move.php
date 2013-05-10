@@ -9,7 +9,7 @@ else {
     echo json_encode(array(
         'status' => 0,
         'message' => 'need game id'
-    ));
+    )) . "\n";
     exit();
 }
 
@@ -21,7 +21,7 @@ if (!file_exists($game_file_path)) {
     echo json_encode(array(
         'status' => 0,
         'message' => 'not an active game'
-    ));
+    )) . "\n";
     exit();
 }
 
@@ -40,7 +40,7 @@ if (!in_array($player_id, $game->players)) {
     echo json_encode(array(
         'status' => 0,
         'message' => 'not a valid player id'
-    ));
+    )) . "\n";
     exit();
 }
 
@@ -52,7 +52,7 @@ if (count($game->turns) > 0) {
         echo json_encode(array(
             'status' => 0,
             'message' => 'not your turn'
-        ));
+        )) . "\n";
         exit();
     }
 }
@@ -62,7 +62,7 @@ if (!isset($game->cols[$col])) {
     echo json_encode(array(
         'status' => 0,
         'message' => 'not a valid row'
-    ));
+    )) . "\n";
     exit();
 }
 
@@ -94,5 +94,5 @@ else {
 save_game_file($game_file_tmp_path, $game_file_path, $game);
 
 header('Content-type: application/json');
-echo json_encode($game);
+echo json_encode($game) . "\n";
 ?>
