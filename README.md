@@ -1,0 +1,4 @@
+connectfour
+===========
+
+Coding exercise
