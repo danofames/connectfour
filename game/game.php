@@ -1,4 +1,8 @@
 <?php
+/* most of the game play and win logic was translated to php from:
+http://homepages.cwi.nl/~tromp/c4/Connect4.java
+*/
+
 $height = 6;
 $width = 7;
 $height1 = $height + 1;
@@ -16,11 +20,21 @@ $game_template = (object) array(
     'players' => array(),
     'turns' => array(),
     'board' => array(0,0),
+    'displayboard' => array(0,0),
     'cols' => array()
 );
 
 for ($i=0; $i<$max_row_count; $i++) {
     array_push($game_template->cols, $i * $height1);
+}
+
+function display_board($game) {
+    global $all;
+    // convert to array for easy showing in the front end.
+    // combine players boards?
+    $game->displayboard[0] = decbin($game->board[0]);
+    $game->displayboard[1] = decbin($game->board[1] ^ $all);
+    return $game->displayboard;
 }
 
 function is_valid_move($game, $player_id, $col) {

@@ -3,15 +3,22 @@
 if (isset($game_id)) {
     $game_file_path = $config->game_dir.'/'.$game_id.'.json';
     $game_file_tmp_path = $config->game_tmp_dir.'/'.$game_id.'.json';
+}
 
-    $player_id_cookie_name = $game_id . '-player_id';
+$player_id_cookie_name = $game_id . '-player_id';
 
-    if (isset($_COOKIE[$player_id_cookie_name])) {
-        $player_id = $_COOKIE[$player_id_cookie_name];
-    }
-    else {
-        $player_id = null;
-    }
+if (isset($_REQUEST['player_id'])) {
+    $player_id = $_REQUEST['player_id'];
+}
+else {
+    $player_id = null;
+}
+
+
+function write_response_and_end($message) {
+    header('Content-type: application/json');
+    echo json_encode($message) . "\n";
+    exit();
 }
 
 function save_game_file($game_file_tmp_path, $game_file_path, $game) {

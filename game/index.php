@@ -13,34 +13,30 @@ require_once 'game.php';
 
 if (file_exists($game_file_path)) {
     $game = json_decode(file_get_contents($game_file_path));
-    if (!$player_id) {
+    if (!isset($player_id)) {
         if (count($game->players) >= 2) {
-            header('Content-type: application/json');
-            echo json_encode(array(
-                'status' => -1,
+            write_response_and_end(array(
+                'status' => 0,
                 'message' => 'game has all players'
             ));
-            exit();
         }
         else {
-            $player_id = count($game->players) + 1;
+            $player_id = count($game->players);
             array_push($game->players, $player_id);
         }
     }
     else if (!in_array($player_id, $game->players)) {
-        header('Content-type: application/json');
-        echo json_encode(array(
-            'status' => -1,
+        write_response_and_end(array(
+            'status' => 0,
             'message' => 'not a valid player id'
         ));
-        exit();
     }
 
 }
 else {
     $game = (object) $game_template;
     $game->id = $game_id;
-    $player_id = 1;
+    $player_id = 0;
     array_push($game->players, $player_id);
 }
 
@@ -53,7 +49,10 @@ else {
     $game->last_move_player = null;
 }
 
-header('Content-type: application/json');
-setcookie($player_id_cookie_name, $player_id, strtotime('+10 days'), '/');
-echo json_encode($game);
+$game->player_id = $player_id;
+
+write_response_and_end(array(
+    'status' => 1,
+    'game' => $game
+));
 ?>

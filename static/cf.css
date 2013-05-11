@@ -1,42 +1,66 @@
 body {
     width:320px;
-    margin:120px auto ;
+    margin:40px auto ;
     text-align:center;
-}
-.connect-four-state-not-this-turn {
-    background-color:#FFE4E1;
-}
-.connect-four-state-this-turn {
-    background-color:#93DB70;
 }
 .connect-four-board {
     margin:0 auto;
     table-layout: fixed;
-    border-spacing:0;
+    border-spacing:2px;
 
     -webkit-transform:rotate(-90deg);
     transform:rotate(-90deg);
 
-    border-left:1px solid #ccc;
+    border-right:4px solid transparent;
+    border-left-color:#ccc;
 }
-.connect-four-row {
-    background-color:#efefef;
+.connect-four-state-not-this-turn {
+    border-right-color:#FFE4E1;
+}
+.connect-four-state-this-turn {
+    border-right-color:#93DB70;
+}
+.connect-four-state-game-over {
+    border-right-color:transparent;
+}
+.connect-four-state-not-this-win {
+    background-color:#ccc;
+}
+.connect-four-state-this-win {
+    background-color:green;
+}
+.connect-four-col {
+    background-color:yellow;
 }
 .connect-four-cell {
     height:60px; width:60px;
-    margin:0;
+    margin:0px;
+    text-align:center;
+    position:relative;
 }
 .connect-four-cell-state-occupied {
 
 }
-.connect-four-row:hover .connect-four-cell {
-    background-color:#e6e6e6;
+.connect-four-col:hover .connect-four-cell {
+    background-color:lightyellow;
 }
-.connect-four-cell-state-player-1,
-.connect-four-row:hover .connect-four-cell-state-player-1 {
-    background-color:blue;
+
+.connect-four-cell-state-player-0:after,
+.connect-four-col:hover .connect-four-cell-state-player-0:after,
+.connect-four-cell-state-player-1:after,
+.connect-four-col:hover .connect-four-cell-state-player-1:after {
+    content:" ";
+    position:relative;
+    display:block;
+    border-radius:50px;
+    height:40px; width:40px;
+    right:-5px;
 }
-.connect-four-cell-state-player-2,
-.connect-four-row:hover .connect-four-cell-state-player-2 {
-    background-color:yellow;
+.connect-four-cell-state-player-0:after,
+.connect-four-col:hover .connect-four-cell-state-player-0:after {
+    background-color:black;
+}
+.connect-four-cell-state-player-1:after,
+.connect-four-col:hover .connect-four-cell-state-player-1:after {
+    background-color:red;
 }
