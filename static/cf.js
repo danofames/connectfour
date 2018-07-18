@@ -56,8 +56,6 @@
         game.data.player_id = resp.game.player_id
 
         game.update_game_board(resp.game)
-        console.log(resp.game)
-        // window.connectfour.run_test(game)
     })
 
     $('#connect-four-board').on('click', '.connect-four-col', function(ev) {

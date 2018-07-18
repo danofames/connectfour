@@ -1,6 +1,4 @@
 <?php
-require_once '../config.php';
-
 if (isset($_GET['game_id'])) {
     $game_id = $_GET['game_id'];
 }

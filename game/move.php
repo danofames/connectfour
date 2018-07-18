@@ -1,6 +1,4 @@
 <?php
-require_once '../config.php';
-
 if (isset($_POST['game_id'])) {
     $game_id = $_POST['game_id'];
 }
